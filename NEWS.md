@@ -1,3 +1,3 @@
-# sameplot 0.1.0
+# sameplot 0.0.1
 
 * Initial CRAN submission.

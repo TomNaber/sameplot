@@ -1,6 +1,6 @@
 Package: sameplot
 Title: Consistent plot rendering and saving via ragg and knitr
-Version: 0.1.0
+Version: 0.0.1
 Authors@R: 
     person("Tom", "Naber", , "tomnaber12@gmail.com", role = c("aut", "cre"))
 Description: Renders plots to a temporary image using ragg and returns a knitr include with the option to save the image to a specified path,
