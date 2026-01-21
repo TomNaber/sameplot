@@ -1,0 +1,80 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# sameplot
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/TomNaber/sameplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TomNaber/sameplot/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+Render plots consistently across interactive R sessions, saved files,
+and knitr output by drawing to a `ragg` device and displaying the
+resulting image via `knitr::include_graphics()`.
+
+## Why?
+
+RStudio’s plot pane, saved figures, and knitted documents can differ due
+to device and rendering differences. `sameplot()` standardizes output by
+always rendering the plot to an image first and then displaying *that*
+image.
+
+## Installation
+
+You can install the development version from GitHub:
+
+``` r
+install.packages("pak")
+pak::pak("TomNaber/sameplot")
+```
+
+Alternatively (remotes):
+
+``` r
+install.packages("remotes")
+remotes::install_github("TomNaber/sameplot")
+```
+
+## Usage
+
+``` r
+suppressPackageStartupMessages(library(sameplot))
+suppressPackageStartupMessages(library(ggplot2))
+#> Warning: package 'ggplot2' was built under R version 4.4.3
+
+p <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  theme_minimal()
+
+# 1) Display via a temporary PNG (useful in RStudio and when knitting)
+sameplot(p)
+```
+
+<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_78646435589c.png" width="100%" />
+
+``` r
+
+# Using a temporary folder as example
+tmp <- file.path(tempdir(), "sameplot-readme")
+
+# 2) Save a PNG (to tempdir)
+sameplot(p, file = file.path(tmp, "mtcars.png"), save = TRUE)
+```
+
+<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_786439007b38.png" width="100%" />
+
+``` r
+
+# 3) Save a TIFF (to tempdir; still displays via a temp PNG for compatibility)
+sameplot(p, file = file.path(tmp, "mtcars.tiff"), save = TRUE)
+```
+
+<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_786475d33fe8.png" width="100%" />
+
+## Notes
+
+- Supported output extensions for saving: `.png`, `.tif`, `.tiff`.
+- When `save = FALSE`, figures are written to a temporary location and
+  cleaned up when the R session ends.
+- `dpi` in the knitr output is set to the same value as `res` used for
+  the `ragg` device.

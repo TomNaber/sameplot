@@ -1,0 +1,20 @@
+Package: sameplot
+Title: Consistent plot rendering and saving via ragg and knitr
+Version: 0.1.0
+Authors@R: 
+    person("Tom", "Naber", , "tomnaber12@gmail.com", role = c("aut", "cre"))
+Description: Renders plots to a temporary image using ragg and returns a knitr include with the option to save the image to a specified path,
+    ensuring consistent appearance across interactive sessions, saved files, and knitted documents.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    knitr,
+    ragg
+Suggests: 
+    ggplot2,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://github.com/TomNaber/sameplot
+BugReports: https://github.com/TomNaber/sameplot/issues
