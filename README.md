@@ -8,16 +8,16 @@
 [![R-CMD-check](https://github.com/TomNaber/sameplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TomNaber/sameplot/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-Render plots consistently across interactive R sessions, saved files,
-and knitr output by drawing to a `ragg` device and displaying the
+Render plots consistently across interactive R Markdown sessions, saved
+files, and knitr output by drawing to a `ragg` device and displaying the
 resulting image via `knitr::include_graphics()`.
 
 ## Why?
 
-RStudio’s plot pane, saved figures, and knitted documents can differ due
-to device and rendering differences. `sameplot()` standardizes output by
-always rendering the plot to an image first and then displaying *that*
-image.
+RStudio’s R Markdown inline plots, saved figures, and knitted documents
+can differ due to different rendering engines and sizing settings.
+`sameplot()` standardizes output by always rendering the plot to an
+image first and then displaying *that* image in the correct size.
 
 ## Installation
 
@@ -38,37 +38,23 @@ remotes::install_github("TomNaber/sameplot")
 ## Usage
 
 ``` r
-suppressPackageStartupMessages(library(sameplot))
-suppressPackageStartupMessages(library(ggplot2))
+library(sameplot)
 
-p <- ggplot(mtcars, aes(wt, mpg)) +
-  geom_point() +
-  theme_minimal()
+p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+  ggplot2::geom_point() +
+  ggplot2::theme_minimal()
 
-# 1) Display via a temporary PNG (useful in RStudio and when knitting)
+# 1) Display a temporary PNG
 sameplot(p)
+
+# 2) Save a PNG
+sameplot(p, file = file.path("figures", "mtcars.png"), save = TRUE)
+
+# 3) Save a TIFF (still displays via a temp PNG for compatibility)
+sameplot(p, file = file.path("figures", "mtcars.tiff"), save = TRUE)
 ```
 
-<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_5460144c3ae.png" alt="" width="100%" />
-
-``` r
-
-# Using a temporary folder as example
-tmp <- file.path(tempdir(), "sameplot-readme")
-
-# 2) Save a PNG (to tempdir)
-sameplot(p, file = file.path(tmp, "mtcars.png"), save = TRUE)
-```
-
-<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_5460410a15a0.png" alt="" width="100%" />
-
-``` r
-
-# 3) Save a TIFF (to tempdir; still displays via a temp PNG for compatibility)
-sameplot(p, file = file.path(tmp, "mtcars.tiff"), save = TRUE)
-```
-
-<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_546024517b96.png" alt="" width="100%" />
+![](man/figures/README-mtcars.png)
 
 ## Notes
 
@@ -83,10 +69,63 @@ sameplot(p, file = file.path(tmp, "mtcars.tiff"), save = TRUE)
 - **When knitting to HTML with `rmarkdown::html_document`, set
   `self_contained: true`** in the YAML. This ensures the images produced
   by `sameplot()` are embedded in the HTML rather than linked as
-  external files that are not accessible. Example:
+  external files in a temporary folder that is not accessible to the
+  HTML when knitting is complete. Example:
 
   ``` yaml
   output:
     html_document:
       self_contained: true
   ```
+
+### `sameplot()` requires inline output (not “Chunk Output in Console”)
+
+`sameplot()` is designed for use in `.Rmd` documents and works by
+rendering to an image file (a temporary PNG) and then displaying that
+file via `knitr::include_graphics()`.
+
+Because this returns a document output, not an interactive plot object,
+it does not work with Rstudio’s **Chunk Output in Console** mode.
+
+To use `sameplot()` in RStudio, enable **inline output**: - Click the
+settings **cogwheel** next to the **Knit** button - Make sure **Chunk
+Output Inline** (not “Chunk Output in Console”) is enabled.
+
+### Optional: Matching `sameplot()` output without using `sameplot()`
+
+Sometimes you can’t pass a plot object to `sameplot()`, e.g., when a
+function draws immediately and returns `NULL`. In that case you can
+still get device-consistent results with the settings below. Note that
+the solution below requires `ragg` to be installed with
+`install.packages("ragg")`.
+
+**1) Use `ragg` for knitr rendering and set chunk options**
+
+Set chunk defaults either globally (setup chunk) or
+per-figure-containing chunk:
+
+- `dev = "ragg_png"` so knitr renders using a `ragg` device
+- `fig.retina = 1` to avoid implicit upscaling
+- `out.width = "100%"` and `out.height = "100%"` so the sameplot() image
+  fills the same output box as regular chunk figures.
+- Explicit `fig.width`, `fig.height`, and `dpi` (these example matches
+  `sameplot()` defaults)
+
+Example (setup chunk):
+
+``` r
+knitr::opts_chunk$set(
+  dev = "ragg_png",
+  fig.retina = 1,
+  out.width = "100%",
+  out.height = "100%",
+  fig.width  = 6.4,
+  fig.height = 4.8,
+  dpi = 300
+)
+```
+
+**2) Set AGG backend in RStudio for inline output**
+
+In RStudio, set: `Tools` → `Global Options...` → `General` → `Graphics`
+→ `Backend` → `AGG`
