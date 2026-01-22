@@ -8,6 +8,6 @@ bibentry(
   title   = "sameplot: Consistent Plot Rendering and Saving Across Interactive Sessions and Reports",
   author  = person(given = "Tom", family = "Naber"),
   year    = year,
-  note    = sprintf("R package version %s", utils::packageVersion("sameplot")),
+  note    = "R package version 0.0.3",
   url     = "https://github.com/TomNaber/sameplot"
 )
