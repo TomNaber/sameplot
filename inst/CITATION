@@ -1,0 +1,13 @@
+citHeader("To cite sameplot in publications, please use:")
+
+year <- format(Sys.Date(), "%Y")
+
+bibentry(
+  bibtype = "Manual",
+  key     = "sameplot",
+  title   = "sameplot: Consistent Plot Rendering and Saving Across Interactive Sessions and Reports",
+  author  = person(given = "Tom", family = "Naber"),
+  year    = year,
+  note    = sprintf("R package version %s", utils::packageVersion("sameplot")),
+  url     = "https://github.com/TomNaber/sameplot"
+)

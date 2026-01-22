@@ -39,8 +39,8 @@ method draws to the active graphics device.}
 \item{save}{Logical; if \code{TRUE}, also save the plot to \code{file}.}
 }
 \value{
-An object returned by \code{\link[knitr:include_graphics]{knitr::include_graphics()}} (rendered by knitr
-in HTML/PDF output).
+An object returned by \code{\link[knitr:include_graphics]{knitr::include_graphics()}}
+(rendered by knitr in HTML/PDF output).
 }
 \description{
 \code{sameplot()} renders \code{plot} to a temporary PNG using a ragg device and returns
@@ -48,6 +48,16 @@ a knitr image include pointing to that PNG. This makes the displayed output
 consistent across interactive use and knitted documents. Optionally, when
 \code{save = TRUE}, the plot is also saved to \code{file} using a ragg device inferred
 from the file extension.
+}
+\details{
+When knitting to HTML (e.g., \code{rmarkdown::html_document()}), \code{sameplot()}
+requires the document to be self-contained so that the generated images are
+embedded in the output. Add this to your YAML:
+\preformatted{
+output:
+  html_document:
+    self_contained: true
+}
 }
 \examples{
 \dontshow{if (requireNamespace("ggplot2", quietly = TRUE)) withAutoprint(\{ # examplesIf}

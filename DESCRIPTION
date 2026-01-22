@@ -1,10 +1,9 @@
 Package: sameplot
-Title: Consistent plot rendering and saving via ragg and knitr
-Version: 0.0.2
+Title: Consistent Plot Rendering and Saving Across Interactive Sessions and Reports
+Version: 0.0.3
 Authors@R: 
     person("Tom", "Naber", , "tomnaber12@gmail.com", role = c("aut", "cre"))
-Description: Renders plots to a temporary image using ragg and returns a knitr include with the option to save the image to a specified path,
-    ensuring consistent appearance across interactive sessions, saved files, and knitted documents.
+Description: Description: Renders plots to a temporary image using 'ragg' and returns a 'knitr::include_graphics()' include, with the option to save the image to a specified path. This helps ensure consistent appearance across interactive sessions, saved files, and knitted documents.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

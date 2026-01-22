@@ -73,3 +73,12 @@ sameplot(p, file = file.path(tmp, "mtcars.tiff"), save = TRUE)
 - When `save = FALSE`, figures are written to a temporary location and cleaned up when
   the R session ends.
 - `dpi` in the knitr output is set to the same value as `res` used for the `ragg` device.
+- **When knitting to HTML with `rmarkdown::html_document`, set `self_contained: true`** in the YAML.
+  This ensures the images produced by `sameplot()` are embedded in the HTML rather than linked as external files that are not accessible.
+  Example:
+
+  ```yaml
+  output:
+    html_document:
+      self_contained: true
+  ```

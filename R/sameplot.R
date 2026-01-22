@@ -1,25 +1,35 @@
 #' Render a plot consistently across RStudio, saved files, and knitr output
 #'
-#' `sameplot()` renders `plot` to a temporary PNG using a ragg device and returns
+#' \code{sameplot()} renders \code{plot} to a temporary PNG using a ragg device and returns
 #' a knitr image include pointing to that PNG. This makes the displayed output
 #' consistent across interactive use and knitted documents. Optionally, when
-#' `save = TRUE`, the plot is also saved to `file` using a ragg device inferred
+#' \code{save = TRUE}, the plot is also saved to \code{file} using a ragg device inferred
 #' from the file extension.
 #'
-#' @param plot A plot object. Typically a ggplot, but any object whose `print()`
+#' @details
+#' When knitting to HTML (e.g., \code{rmarkdown::html_document()}), \code{sameplot()}
+#' requires the document to be self-contained so that the generated images are
+#' embedded in the output. Add this to your YAML:
+#' \preformatted{
+#' output:
+#'   html_document:
+#'     self_contained: true
+#' }
+#'
+#' @param plot A plot object. Typically a ggplot, but any object whose \code{print()}
 #'   method draws to the active graphics device.
 #' @param file Output filename (relative or absolute). Must include an extension
-#'   `.png` or `.tif`/`.tiff`. Required when `save = TRUE`.
+#'   \code{.png} or \code{.tif}/\code{.tiff}. Required when \code{save = TRUE}.
 #' @param width,height Plot size.
-#' @param units Units for `width` and `height` (e.g., `"in"`, `"cm"`, `"mm"`).
+#' @param units Units for \code{width} and \code{height} (e.g., \code{"in"}, \code{"cm"}, \code{"mm"}).
 #' @param background Background color passed to ragg devices.
 #' @param res Resolution in pixels per inch passed to ragg devices.
 #' @param scaling Increase to make plot bigger within the same physical size.
 #' @param bitsize Record color as 8 bit or 16 bit. 16 bit may be useful for smoother gradients.
-#' @param save Logical; if `TRUE`, also save the plot to `file`.
+#' @param save Logical; if \code{TRUE}, also save the plot to \code{file}.
 #'
-#' @return An object returned by [knitr::include_graphics()] (rendered by knitr
-#'   in HTML/PDF output).
+#' @return An object returned by \code{\link[knitr:include_graphics]{knitr::include_graphics()}}
+#'   (rendered by knitr in HTML/PDF output).
 #'
 #' @examplesIf requireNamespace("ggplot2", quietly = TRUE)
 #' p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) + ggplot2::geom_point()
@@ -98,6 +108,8 @@ sameplot <- function(plot,
     }
     file.copy(temp_fig, file, overwrite = TRUE)
   }
+
+  .sameplot_check_self_contained_html()
 
   if ("rel_path" %in% names(formals(knitr::include_graphics))) {
     knitr::include_graphics(path = temp_png,

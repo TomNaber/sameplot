@@ -6,28 +6,18 @@ test_that("sameplot validates inputs", {
   p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) + ggplot2::geom_point()
 
   # save=TRUE requires a non-empty filename
-  expect_error(
-    sameplot(p, save = TRUE),
-    "Please provide a filename",
-    fixed = FALSE
-  )
-  expect_error(
-    sameplot(p, file = "", save = TRUE),
-    "Please provide a filename",
-    fixed = FALSE
-  )
+  expect_error(sameplot(p, save = TRUE), "Please provide a filename", fixed = FALSE)
+  expect_error(sameplot(p, file = "", save = TRUE),
+               "Please provide a filename",
+               fixed = FALSE)
 
   # Unsupported extension should error when file is provided
-  expect_error(
-    sameplot(p, file = "x.jpg", save = FALSE),
-    "Extension must be",
-    fixed = FALSE
-  )
-  expect_error(
-    sameplot(p, file = "x.jpg", save = TRUE),
-    "Extension must be",
-    fixed = FALSE
-  )
+  expect_error(sameplot(p, file = "x.jpg", save = FALSE),
+               "Extension must be",
+               fixed = FALSE)
+  expect_error(sameplot(p, file = "x.jpg", save = TRUE),
+               "Extension must be",
+               fixed = FALSE)
 })
 
 test_that("sameplot saves files for supported extensions", {
@@ -46,7 +36,8 @@ test_that("sameplot saves files for supported extensions", {
 
   # TIFF
   out_tif <- file.path(tempdir(), "sameplot-test", "p.tiff")
-  if (file.exists(out_tif)) unlink(out_tif)
+  if (file.exists(out_tif))
+    unlink(out_tif)
   expect_silent(sameplot(p, file = out_tif, save = TRUE))
   expect_true(file.exists(out_tif))
   expect_gt(file.info(out_tif)$size, 0)

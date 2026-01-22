@@ -40,7 +40,6 @@ remotes::install_github("TomNaber/sameplot")
 ``` r
 suppressPackageStartupMessages(library(sameplot))
 suppressPackageStartupMessages(library(ggplot2))
-#> Warning: package 'ggplot2' was built under R version 4.4.3
 
 p <- ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +
@@ -50,7 +49,7 @@ p <- ggplot(mtcars, aes(wt, mpg)) +
 sameplot(p)
 ```
 
-<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_78646435589c.png" width="100%" />
+<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_5460144c3ae.png" alt="" width="100%" />
 
 ``` r
 
@@ -61,7 +60,7 @@ tmp <- file.path(tempdir(), "sameplot-readme")
 sameplot(p, file = file.path(tmp, "mtcars.png"), save = TRUE)
 ```
 
-<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_786439007b38.png" width="100%" />
+<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_5460410a15a0.png" alt="" width="100%" />
 
 ``` r
 
@@ -69,12 +68,25 @@ sameplot(p, file = file.path(tmp, "mtcars.png"), save = TRUE)
 sameplot(p, file = file.path(tmp, "mtcars.tiff"), save = TRUE)
 ```
 
-<img src="C:\Users\Tom\AppData\Local\Temp\Rtmp2LWDc2\_plot_786475d33fe8.png" width="100%" />
+<img src="C:\Users\Tom\AppData\Local\Temp\RtmpEnd6oK\_plot_546024517b96.png" alt="" width="100%" />
 
 ## Notes
 
 - Supported output extensions for saving: `.png`, `.tif`, `.tiff`.
+
 - When `save = FALSE`, figures are written to a temporary location and
   cleaned up when the R session ends.
+
 - `dpi` in the knitr output is set to the same value as `res` used for
   the `ragg` device.
+
+- **When knitting to HTML with `rmarkdown::html_document`, set
+  `self_contained: true`** in the YAML. This ensures the images produced
+  by `sameplot()` are embedded in the HTML rather than linked as
+  external files that are not accessible. Example:
+
+  ``` yaml
+  output:
+    html_document:
+      self_contained: true
+  ```
