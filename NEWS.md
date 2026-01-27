@@ -1,3 +1,7 @@
+# sameplot 0.1.0
+
+* Documentation updates.
+
 # sameplot 0.0.3
 
 * Include self_contained YAML check and documentation updates.

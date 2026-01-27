@@ -28,16 +28,15 @@ test_that("sameplot saves files for supported extensions", {
   p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) + ggplot2::geom_point()
 
   # PNG
-  out_png <- file.path(tempdir(), "sameplot-test", "p.png")
-  unlink(dirname(out_png), recursive = TRUE, force = TRUE)
+  out_png <- tempfile(fileext = ".png")
+  on.exit(unlink(out_png), add = TRUE)
   expect_silent(sameplot(p, file = out_png, save = TRUE))
   expect_true(file.exists(out_png))
   expect_gt(file.info(out_png)$size, 0)
 
   # TIFF
-  out_tif <- file.path(tempdir(), "sameplot-test", "p.tiff")
-  if (file.exists(out_tif))
-    unlink(out_tif)
+  out_tif <- tempfile(fileext = ".tiff")
+  on.exit(unlink(out_tif), add = TRUE)
   expect_silent(sameplot(p, file = out_tif, save = TRUE))
   expect_true(file.exists(out_tif))
   expect_gt(file.info(out_tif)$size, 0)
