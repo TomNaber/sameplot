@@ -31,15 +31,34 @@
 #' @return An object returned by \code{\link[knitr:include_graphics]{knitr::include_graphics()}}
 #'   (rendered by knitr in HTML/PDF output).
 #'
-#' @examplesIf requireNamespace("ggplot2", quietly = TRUE)
-#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) + ggplot2::geom_point()
-#' sameplot(p)  # display via temp PNG
+#' @seealso
+#' \itemize{
+#'   \item \url{https://github.com/TomNaber/sameplot}
+#' }
 #'
-#' # Save to a temporary folder (safe for R CMD check)
-#' out_png <- file.path(tempdir(), "p.png")
-#' out_tif <- file.path(tempdir(), "p.tiff")
-#' sameplot(p, out_png, save = TRUE)
-#' sameplot(p, out_tif, save = TRUE)
+#' @examplesIf requireNamespace("ggplot2", quietly = TRUE)
+#' p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+#'   ggplot2::geom_point()
+#'
+#' # Display via temporary PNG
+#' sameplot(p)
+#'
+#' # Save a PNG
+#' sameplot(p,
+#'   file = file.path(tempdir(), "mtcars.png"),
+#'   save = TRUE
+#'   )
+#'
+#' # Save a TIFF with custom parameters
+#' sameplot(
+#'   p,
+#'   file =  file.path(tempdir(), "mtcars.tiff"),
+#'   width = 4,
+#'   height = 6,
+#'   background = "transparent",
+#'   res = 600,
+#'   save = TRUE
+#' )
 #' @export
 sameplot <- function(plot,
                      file = NULL,

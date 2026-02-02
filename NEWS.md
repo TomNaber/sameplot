@@ -1,3 +1,7 @@
+# sameplot 0.1.1
+
+* Documentation updates.
+
 # sameplot 0.1.0
 
 * Documentation updates.

@@ -1,9 +1,9 @@
 Package: sameplot
 Title: Consistent Plot Rendering and Saving Across Interactive Sessions and Reports
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person("Tom", "Naber", , "tomnaber12@gmail.com", role = c("aut", "cre"))
-Description: Renders plots to a temporary image using the ragg graphics device and returns knitr::include_graphics() output. Optionally saves the image to a specified path. This helps ensure consistent appearance across interactive sessions, saved files, and knitted documents. For more details see Pedersen and Shemanarev (2025) <doi: 10.32614/CRAN.package.ragg>.
+Description: Renders plots to a temporary image using the ragg graphics device and returns knitr::include_graphics() output. Optionally saves the image to a specified path. This helps ensure consistent appearance across interactive sessions, saved files, and knitted documents. For more details see Pedersen and Shemanarev (2025) <doi:10.32614/CRAN.package.ragg>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

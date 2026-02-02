@@ -61,13 +61,32 @@ output:
 }
 \examples{
 \dontshow{if (requireNamespace("ggplot2", quietly = TRUE)) withAutoprint(\{ # examplesIf}
-p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) + ggplot2::geom_point()
-sameplot(p)  # display via temp PNG
+p <- ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+  ggplot2::geom_point()
 
-# Save to a temporary folder (safe for R CMD check)
-out_png <- file.path(tempdir(), "p.png")
-out_tif <- file.path(tempdir(), "p.tiff")
-sameplot(p, out_png, save = TRUE)
-sameplot(p, out_tif, save = TRUE)
+# Display via temporary PNG
+sameplot(p)
+
+# Save a PNG
+sameplot(p,
+  file = file.path(tempdir(), "mtcars.png"),
+  save = TRUE
+  )
+
+# Save a TIFF with custom parameters
+sameplot(
+  p,
+  file =  file.path(tempdir(), "mtcars.tiff"),
+  width = 4,
+  height = 6,
+  background = "transparent",
+  res = 600,
+  save = TRUE
+)
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\itemize{
+\item \url{https://github.com/TomNaber/sameplot}
+}
 }
