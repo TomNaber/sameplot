@@ -1,8 +1,13 @@
-## Resubmission
-This is a resubmission of `sameplot`. In response to CRAN feedback I have:
-- Removed the single quotes around knitr::include_graphics() in the DESCRIPTION.
-- Added methodological reference in the DESCRIPTION in the requested format (Authors (year) <doi:...>)
-- Ensured no residual temporary files/folders are left behind: examples/tests write only to tempfile()/tempdir() and clean up created files.
+## Package update
+
+This is an update to sameplot, currently version 0.1.0 on CRAN.
+
+Changes include:
+
+- Added a `compression` argument for TIFF output.
+- TIFF output now uses lossless LZW compression by default.
+- Compression options are passed only to the TIFF device.
+- Updated documentation.
 
 ## Test environments
 - Windows 11 (local), R 4.5.2

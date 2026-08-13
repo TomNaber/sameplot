@@ -1,3 +1,8 @@
+# sameplot 0.1.2
+
+* Documentation updates.
+* Include .tif-specific compression options.
+
 # sameplot 0.1.1
 
 * Documentation updates.

@@ -13,6 +13,7 @@ sameplot(
   background = "white",
   scaling = 1,
   bitsize = 8,
+  compression = "lzw",
   res = 300,
   save = FALSE
 )
@@ -33,6 +34,9 @@ method draws to the active graphics device.}
 \item{scaling}{Increase to make plot bigger within the same physical size.}
 
 \item{bitsize}{Record color as 8 bit or 16 bit. 16 bit may be useful for smoother gradients.}
+
+\item{compression}{TIFF compression method passed to
+\code{ragg::agg_tiff()}. Ignored for PNG output.}
 
 \item{res}{Resolution in pixels per inch passed to ragg devices.}
 
@@ -71,12 +75,12 @@ sameplot(p)
 sameplot(p,
   file = file.path(tempdir(), "mtcars.png"),
   save = TRUE
-  )
+)
 
 # Save a TIFF with custom parameters
 sameplot(
   p,
-  file =  file.path(tempdir(), "mtcars.tiff"),
+  file = file.path(tempdir(), "mtcars.tiff"),
   width = 4,
   height = 6,
   background = "transparent",

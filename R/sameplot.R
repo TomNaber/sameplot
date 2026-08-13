@@ -26,6 +26,8 @@
 #' @param res Resolution in pixels per inch passed to ragg devices.
 #' @param scaling Increase to make plot bigger within the same physical size.
 #' @param bitsize Record color as 8 bit or 16 bit. 16 bit may be useful for smoother gradients.
+#' @param compression TIFF compression method passed to
+#'   \code{ragg::agg_tiff()}. Ignored for PNG output.
 #' @param save Logical; if \code{TRUE}, also save the plot to \code{file}.
 #'
 #' @return An object returned by \code{\link[knitr:include_graphics]{knitr::include_graphics()}}
@@ -47,12 +49,12 @@
 #' sameplot(p,
 #'   file = file.path(tempdir(), "mtcars.png"),
 #'   save = TRUE
-#'   )
+#' )
 #'
 #' # Save a TIFF with custom parameters
 #' sameplot(
 #'   p,
-#'   file =  file.path(tempdir(), "mtcars.tiff"),
+#'   file = file.path(tempdir(), "mtcars.tiff"),
 #'   width = 4,
 #'   height = 6,
 #'   background = "transparent",
@@ -68,28 +70,31 @@ sameplot <- function(plot,
                      background = "white",
                      scaling = 1,
                      bitsize = 8,
+                     compression = "lzw",
                      res = 300,
                      save = FALSE) {
-  if (!is.null(file))
+  if (!is.null(file)) {
     stopifnot(is.character(file), length(file) == 1L)
+  }
 
   if (isTRUE(save) && (is.null(file) || !nzchar(file))) {
     stop("Please provide a filename when save = TRUE.", call. = FALSE)
   }
 
   ext <- if (!is.null(file) &&
-             nzchar(file))
+    nzchar(file)) {
     paste0(".", tools::file_ext(file))
-  else
+  } else {
     ".png"
+  }
   ext_key <- tolower(ext)
 
   if ((isTRUE(save) || (!is.null(file) && nzchar(file))) &&
-      !ext_key %in% c(".png", ".tif", ".tiff")) {
+    !ext_key %in% c(".png", ".tif", ".tiff")) {
     stop("Extension must be .png or .tif/.tiff", call. = FALSE)
   }
 
-  write_image <- function(device, filename) {
+  write_image <- function(device, filename, ...) {
     device(
       filename = filename,
       width = width,
@@ -98,7 +103,8 @@ sameplot <- function(plot,
       background = background,
       res = res,
       scaling = scaling,
-      bitsize = bitsize
+      bitsize = bitsize,
+      ...
     )
     on.exit(grDevices::dev.off(), add = TRUE)
     print(plot)
@@ -117,7 +123,11 @@ sameplot <- function(plot,
 
   if (ext_key %in% c(".tif", ".tiff") && isTRUE(save)) {
     temp_fig <- paste0(temp_base, ext)
-    write_image(ragg::agg_tiff, temp_fig)
+    write_image(
+      ragg::agg_tiff,
+      temp_fig,
+      compression = compression
+    )
   }
 
   if (isTRUE(save)) {
@@ -131,9 +141,11 @@ sameplot <- function(plot,
   .sameplot_check_self_contained_html()
 
   if ("rel_path" %in% names(formals(knitr::include_graphics))) {
-    knitr::include_graphics(path = temp_png,
-                            dpi = res,
-                            rel_path = FALSE)
+    knitr::include_graphics(
+      path = temp_png,
+      dpi = res,
+      rel_path = FALSE
+    )
   } else {
     knitr::include_graphics(path = temp_png, dpi = res)
   }
