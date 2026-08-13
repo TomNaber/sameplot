@@ -15,7 +15,7 @@ Changes include:
 - R-hub: windows, linux, macos, macos-arm64
 
 ## R CMD check results
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 2 notes
 
 ## Downstream dependencies
 Not applicable.
